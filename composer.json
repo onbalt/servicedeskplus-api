@@ -1,0 +1,38 @@
+{
+	"name": "onbalt/servicedeskplus-api",
+	"description": "Laravel integration with Manageengine Servicedeskplus API",
+	"keywords": ["servicedeskplus", "manageengine", "laravel"],
+	"type": "library",
+	"require": {
+		"php": ">=5.6",
+		"guzzlehttp/guzzle": "^6.2"
+	},
+    "require-dev": {
+        "graham-campbell/testbench": "^3.3",
+        "phpunit/phpunit": "^5.0"
+    },
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Onbalt",
+			"email": "github@onbalt.ru"
+		}
+	],
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Onbalt\\ServicedeskplusApi\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Onbalt\\ServicedeskplusApi\\ServicedeskplusApiServiceProvider"
+			],
+            "aliases": {
+                "ServicedeskplusApi": "Onbalt\\ServicedeskplusApi\\ServicedeskplusApiFacade"
+            }
+		}
+	}
+}
