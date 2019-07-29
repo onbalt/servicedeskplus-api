@@ -1,16 +1,16 @@
 {
 	"name": "onbalt/servicedeskplus-api",
-	"description": "Laravel integration with Manageengine Servicedeskplus API",
-	"keywords": ["servicedeskplus", "manageengine", "laravel"],
+	"description": "Laravel integration with ManageEngine ServiceDesk Plus API",
+	"keywords": ["servicedeskplus", "sdp", "manageengine", "sdpapi", "laravel"],
 	"type": "library",
 	"require": {
 		"php": ">=5.6",
-		"guzzlehttp/guzzle": "^6.2"
+		"guzzlehttp/guzzle": "^6.0"
 	},
-    "require-dev": {
-        "graham-campbell/testbench": "^3.3",
-        "phpunit/phpunit": "^5.0"
-    },
+	"require-dev": {
+		"orchestra/testbench": "^3.7",
+		"phpunit/phpunit": "^7.0"
+	},
 	"license": "MIT",
 	"authors": [
 		{
@@ -25,14 +25,19 @@
 			"Onbalt\\ServicedeskplusApi\\": "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Onbalt\\ServicedeskplusApi\\Tests\\": "tests/"
+		}
+	},
 	"extra": {
 		"laravel": {
 			"providers": [
 				"Onbalt\\ServicedeskplusApi\\ServicedeskplusApiServiceProvider"
 			],
-            "aliases": {
-                "ServicedeskplusApi": "Onbalt\\ServicedeskplusApi\\ServicedeskplusApiFacade"
-            }
+			"aliases": {
+				"ServicedeskplusApi": "Onbalt\\ServicedeskplusApi\\Facades\\ServicedeskplusApi"
+			}
 		}
 	}
 }

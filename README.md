@@ -1,1 +1,1 @@
-# Laravel integration with Manageengine Servicedeskplus API
+# Laravel integration with ManageEngine ServiceDesk Plus API
