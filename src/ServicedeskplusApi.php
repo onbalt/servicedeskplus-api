@@ -3,7 +3,6 @@
 namespace Onbalt\ServicedeskplusApi;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
 
 class ServicedeskplusApi
 {
@@ -133,7 +132,9 @@ class ServicedeskplusApi
             return $this->getResponseData($response);
         } catch (\Exception $exception) {
             $message = $exception->getMessage();
-            Log::error($message);
+            if (function_exists('logger')) {
+                logger()->error($message);
+            }
             throw new \Exception($message, $code = 0, $exception);
         }
     }
@@ -155,7 +156,9 @@ class ServicedeskplusApi
             if (json_last_error() == JSON_ERROR_NONE) {
                 return $contentObject;
             }
-            Log::error(json_last_error_msg());
+            if (function_exists('logger')) {
+                logger()->error(json_last_error_msg());
+            }
         } else if ($contentType == 'text/xml') {
             libxml_use_internal_errors(true);
             $contentObject = simplexml_load_string($contents);
@@ -163,10 +166,14 @@ class ServicedeskplusApi
                 return $contentObject;
             }
             if ($libxmlError = libxml_get_last_error()) {
-                Log::error($libxmlError->message);
+                if (function_exists('logger')) {
+                    logger()->error($libxmlError->message);
+                }
             }
         } else {
-            Log::warning('Can\'t transform response with Content-Type ' . $contentType);
+            if (function_exists('logger')) {
+                logger()->warning('Can\'t transform response with Content-Type ' . $contentType);
+            }
         }
         return $contents;
     }
