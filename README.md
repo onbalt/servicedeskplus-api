@@ -33,21 +33,21 @@ Now run this command in your terminal to publish this package config:
 php artisan vendor:publish --tag=servicedeskplus-api-config
 ```
 
-after publishing your config file, open `config/servicedeskplus-api.php` and fill your SDP URL and technician key:
+after publishing your config file, open `config/servicedeskplus-api.php` and fill your SDP URL and [technician key](http://ui.servicedeskplus.com/APIDocs3/index.html#authentication):
 
 ```php
 return [
-	'api_base_url' => env('SDPAPI_BASE_URL', 'http://helpdesk/api/v3/'),
+	'api_base_url' => env('SDPAPI_BASE_URL', 'http://helpdesk.local/api/v3/'),
 	'technician_key' => env('SDPAPI_TECHNICIAN_KEY', 'key'),
 	'api_version' => env('SDPAPI_VERSION', '3'),
 	'api_v1_format' => env('SDPAPI_V1_FORMAT', 'json'),
-    'timeout' => 60,
+	'timeout' => 60,
 ];
 ```
 
 also you can add config parametrs in `.env` file:
 ```
-SDPAPI_BASE_URL=http://helpdesk/api/v3/
+SDPAPI_BASE_URL=http://helpdesk.local/api/v3/
 SDPAPI_TECHNICIAN_KEY=YOUR_TECHNICIAN_KEY
 ```
 
@@ -71,11 +71,11 @@ require 'vendor/autoload.php';
 use Onbalt\ServicedeskplusApi\ServicedeskplusApi;
 
 $config = [
-	'api_base_url' => 'http://helpdesk/api/v3/',
+	'api_base_url' => 'http://helpdesk.local/api/v3/',
 	'technician_key' => 'YOUR_TECHNICIAN_KEY',
 	'api_version' => '3',
 	'api_v1_format' => 'json',
-    'timeout' => 60,
+	'timeout' => 60,
 ];
 
 $sdpApi = new ServicedeskplusApi($config);
@@ -83,20 +83,38 @@ $sdpApi = new ServicedeskplusApi($config);
 // View Request
 $response = $sdpApi->get('requests/111');
 var_dump($response->request);
- ```
+```
 
 ## Examples
 
 ### View Request
+See: http://ui.servicedeskplus.com/APIDocs3/index.html#view-request
 ```php
 $response = ServicedeskplusApi::get('requests/111');
-var_dump($response->request);
- ```
+var_dump($response);
+```
+```php
+object(stdClass)# (2) {
+  ["request"]=>
+  object(stdClass)# (50) {
+    //<all request properties in V3 format>
+    //@see: http://ui.servicedeskplus.com/APIDocs3/index.html#request8
+  }
+  ["response_status"]=>
+  object(stdClass)# (2) {
+    ["status_code"]=>
+    int(2000)
+    ["status"]=>
+    string(7) "success"
+  }
+}
+```
 
 ### View all Requests
+See: http://ui.servicedeskplus.com/APIDocs3/index.html#view-all-requests
 ```php
-$inputData = ServicedeskplusApi::prepareInputData([
-	'list_info' => [
+$inputData = ServicedeskplusApi::prepareJsonInputData([
+	'list_info' => [ //@see: http://ui.servicedeskplus.com/APIDocs3/index.html#list-info
 		'row_count' => 10, //max 100
 		'start_index' => 1,
 		'sort_field' => 'id',
@@ -113,9 +131,13 @@ $inputData = ServicedeskplusApi::prepareInputData([
 ]);
 $response = ServicedeskplusApi::get('requests', $inputData);
 var_dump($response->requests);
- ```
+```
 
 ## Credits
 
 - [Onbalt](https://github.com/onbalt)
 - [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

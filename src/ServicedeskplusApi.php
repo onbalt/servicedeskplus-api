@@ -105,7 +105,11 @@ class ServicedeskplusApi
     public function setFormParams($params = [])
     {
         if (is_array($params)) {
-            $this->parameters['form_params'] = $params;
+            if (array_key_exists('multipart', $params)) {
+                $this->parameters['multipart'] = $params['multipart'];
+            } else {
+                $this->parameters['form_params'] = $params;
+            }
         }
         return $this;
     }
@@ -113,7 +117,7 @@ class ServicedeskplusApi
     /**
      * @param array $params
      */
-    public function prepareInputData($params = [])
+    public function prepareJsonInputData($params = [])
     {
         if (is_array($params)) {
             $inputDataKey = 'input_data';
