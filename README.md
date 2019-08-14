@@ -130,7 +130,112 @@ $inputData = ServicedeskplusApi::prepareJsonInputData([
 	]
 ]);
 $response = ServicedeskplusApi::get('requests', $inputData);
-var_dump($response->requests);
+var_dump($response);
+```
+```php
+object(stdClass)# (3) {
+  ["requests"]=>
+  array(10) {
+    [0]=>
+    object(stdClass)# (15) {
+      //<base request properties in V3 format>
+      //@see: http://ui.servicedeskplus.com/APIDocs3/index.html#view-all-requests
+    }
+    [1]=>
+    //<...>
+  }
+  ["response_status"]=>
+  object(stdClass)# (2) {
+    ["status_code"]=>
+    int(2000)
+    ["status"]=>
+    string(7) "success"
+  },
+  ["list_info"]=>
+  object(stdClass)# (8) {
+    ["has_more_rows"]=>
+    bool(true)
+    ["get_total_count"]=>
+    string(7) "true"
+    ["total_count"]=>
+    int(111)
+    //<other source properties from $inputData's 'list_info' array>
+  }
+}
+```
+
+### Add new Request
+See: http://ui.servicedeskplus.com/APIDocs3/index.html#add-request
+```php
+$inputData = ServicedeskplusApi::prepareJsonInputData([
+	'request' => [
+		'subject' => 'Subject of the request',
+		'description' => 'HTML description of the request. Contains formatted text.',
+		'requester' => [
+			'name' => 'Dummy Requester',
+			'email_id' => 'dummy.requester@dummy.com',
+		],
+		'site' => [
+			'name' => 'Requester Company',
+		],
+		'impact' => [
+			'name' => 'High',
+		],
+		'urgency' => [
+			'name' => 'High',
+		],
+		'level' => [
+			'name' => 'Tier 1',
+		],
+		'mode' => [
+			'name' => 'Web Form',
+		],
+	]
+]);
+$workorder = ServicedeskplusApi::post('requests', null, $inputData);
+var_dump($workorder->request->id);
+//int(112)
+```
+
+### Add Attachment
+See: Attachment / Add Attachment at http://beta.servicedeskplusmsp.com/SetUpWizard.do?forwardTo=apidoc&username=demo&password=demo
+```php
+$inputData = ServicedeskplusApi::prepareJsonInputData([
+	'attachment' => [
+		'request' => [
+			'id' => 112,
+		],
+	]
+]);
+$filesData['multipart'] = [[
+	'name' => 'file0',
+	'contents' => fopen('/full/path/to/file.ext', 'r'),
+	'filename' => 'file.ext',
+]];
+$response = ServicedeskplusApi::post('attachments', $inputData, $filesData);
+var_dump($response);
+```
+```php
+object(stdClass)# (2) {
+  ["response_status"]=>
+  object(stdClass)# (2) {
+    ["status_code"]=>
+    int(2000)
+    ["status"]=>
+    string(7) "success"
+  }
+  ["attachment"]=>
+  object(stdClass)# (4) {
+    ["id"]=>
+    int(101)
+    ["file_name"]=>
+    string(7) "file.ext"
+    ["content_url"]=>
+    string(7) "/api/v3/attachments/101"
+    ["size"]=>
+    string(7) "2.42KB"
+  }
+}
 ```
 
 ## Credits
